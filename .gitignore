@@ -1,0 +1,96 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+
+# generated files in target dirs
+
+target/
+
+# log files
+
+*.log
+
+*.logs
+*.gz
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+#IntelliJ files
+**/*.iml
+**/.idea
+**/.gradle
+
+/target
+mvnw
+mvnw.cmd
+.mvn
+
+*#
+*.iml
+*.ipr
+*.iws
+*.jar
+*.sw?
+*~
+.#*
+.*.md.html
+.DS_Store
+.classpath
+.factorypath
+.idea
+.metadata
+.project
+.recommenders
+.settings
+.springBeans
+/build
+/code
+MANIFEST.MF
+_site/
+activemq-data
+bin
+build
+build.log
+dependency-reduced-pom.xml
+dump.rdb
+interpolated*.xml
+lib/
+manifest.yml
+overridedb.*
+settings.xml
+target
+transaction-logs
+.flattened-pom.xml
+secrets.yml
+/.idea/codeStyles/Project.xml
