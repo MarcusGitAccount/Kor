@@ -94,3 +94,5 @@ transaction-logs
 .flattened-pom.xml
 secrets.yml
 /.idea/codeStyles/Project.xml
+
+notes
