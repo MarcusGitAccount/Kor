@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.Date;
 
 @Entity
+@Table(name = "Expenditure")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -44,10 +45,6 @@ public class Expenditure {
   @Enumerated(EnumType.STRING)
   @NotNull
   private ExpenditureType type;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "daily_budget_id")
