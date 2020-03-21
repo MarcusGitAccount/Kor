@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 import java.util.Date;
@@ -26,11 +27,18 @@ public class DailyBudget {
   @Temporal(TemporalType.DATE)
   private Date date;
 
+  @Column
+  private String name;
+
   @Column(length = 255)
   private String comment;
 
   @Column(name = "imposed_limit", nullable = false, columnDefinition = "int default 0")
   private Integer imposedLimit;
+
+  @NotNull
+  @Column(length = 3, name = "currency_code")
+  private String currencyCode;
 
   @Column
   @OneToMany(mappedBy = "dailyBudget")
