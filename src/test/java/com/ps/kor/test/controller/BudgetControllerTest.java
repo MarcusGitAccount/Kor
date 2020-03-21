@@ -31,7 +31,11 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
 
+/**
+ * Class for testing the endpoints of the budget controller.
+ */
 @Log4j2
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(value = BudgetController.class)
@@ -50,15 +54,26 @@ public class BudgetControllerTest {
   @MockBean
   private BudgetRoleRepo budgetRoleRepo;
 
-  private List<BudgetRole> createdRoles;
+  private List<BudgetRole> testRoles;
 
   private List<User> testUsers;
 
+  /**
+   * @param str
+   * @return the string argument enclosed by "
+   */
+  private String getEnclosedString(String str) {
+    return String.format("\"%s\"", str);
+  }
+
+  /**
+   * Perform setup for each test:
+   * - init containers for objects that are created during each test
+   * - mock JPA repositories' methods
+   */
   @Before
   public void setupTest() {
-    MockitoAnnotations.initMocks(this);
-
-    createdRoles = new LinkedList<>();
+    testRoles = new LinkedList<>();
     testUsers = new LinkedList<>();
 
     // When a role is created during a test, save it.
@@ -66,20 +81,25 @@ public class BudgetControllerTest {
         .then(answer -> {
           BudgetRole role = answer.getArgument(0);
 
-          if (createdRoles != null) {
-            createdRoles.add(role);
+          if (testRoles != null) {
+            testRoles.add(role);
           }
           return role;
+        });
+
+    when(dailyBudgetRepo.save(Mockito.any(DailyBudget.class)))
+        .then(answer -> {
+          return answer.getArgument(0);
         });
 
     when(budgetRoleRepo.findById(Mockito.any(UUID.class)))
        .then(answer -> {
          UUID id = answer.getArgument(0);
 
-         if (createdRoles == null) {
+         if (testRoles == null) {
            return null;
          }
-         return createdRoles.stream()
+         return testRoles.stream()
              .filter(role -> role.getId().equals(id))
              .findAny();
        });
@@ -97,6 +117,13 @@ public class BudgetControllerTest {
         });
   }
 
+  /**
+   * Test the post endpoint of /api/budget.
+   * Asserting the following:
+   * - the correct CREATED HttpStatus,
+   * - one role has been created for the given used with
+   *   the appropriate type.
+   */
   @Test
   public void testCreateMethod() {
     User user = new User();
@@ -109,18 +136,27 @@ public class BudgetControllerTest {
     RequestBuilder requestBuilder = MockMvcRequestBuilders
         .post("/api/budget")
         .characterEncoding("utf-8")
-        .header("authorization", user.getId().toString())
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(String.format("{\"id\": \"%s\"}", user.getId()));
+        .header("authorization", user.getId().toString())
+        .content(String.format("{%s: %s}",
+            getEnclosedString("id"),
+            getEnclosedString(user.getId().toString())));
 
     try {
       MvcResult result = mockMvc.perform(requestBuilder).andReturn();
       MockHttpServletResponse response = result.getResponse();
+      BudgetRole createdRole;
 
-      Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatus());
-      log.info("test done");
-    } catch (Exception ex) {
+
+      assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+      assertEquals(1, testRoles.size()); // make sure only one instance was created
+
+      createdRole = testRoles.get(0);
+      assertEquals(user, createdRole.getUser());
+      assertEquals(BudgetRole.BudgetRoleType.CREATOR, createdRole.getRoleType());
+    }
+    catch (Exception ex) {
       log.error(ex.getMessage());
     }
   }
