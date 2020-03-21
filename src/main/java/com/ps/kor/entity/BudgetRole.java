@@ -1,6 +1,7 @@
 package com.ps.kor.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -31,7 +32,7 @@ public class BudgetRole {
   private UUID id;
 
   @Column(name = "creation_time", nullable = false, updatable = false)
-  @Temporal(TemporalType.DATE)
+  @CreationTimestamp
   private Date creationTime;
 
   @Column
