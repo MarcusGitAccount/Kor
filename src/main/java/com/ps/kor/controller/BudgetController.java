@@ -4,6 +4,7 @@ import com.ps.kor.controller.response.ResponseEntityFactory;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
 import com.ps.kor.entity.User;
+import com.ps.kor.entity.enums.BudgetRoleType;
 import com.ps.kor.repo.BudgetRoleRepo;
 import com.ps.kor.repo.DailyBudgetRepo;
 import com.ps.kor.repo.UserRepo;
@@ -44,7 +45,7 @@ public class BudgetController {
 
     BudgetRole role = new BudgetRole();
 
-    role.setRoleType(BudgetRole.BudgetRoleType.CREATOR);
+    role.setRoleType(BudgetRoleType.CREATOR);
     role.setCreator(null);
     role.setEnabled(true);
     role.setUser(user);

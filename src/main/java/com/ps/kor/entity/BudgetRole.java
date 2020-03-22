@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.ps.kor.entity.enums.BudgetRoleType;
+
 @Entity
 @Table(name = "BudgetRole")
 @NoArgsConstructor
@@ -21,10 +23,6 @@ public class BudgetRole {
   public static final String USER_JOIN_COL_NAME = "user";
 
   public static final String SELF_REF_COL_NAME = "creator";
-
-  public enum BudgetRoleType {
-    CREATOR, ADMIN, EDIT, VIEW
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

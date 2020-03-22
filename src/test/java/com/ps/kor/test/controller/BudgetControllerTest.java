@@ -4,6 +4,7 @@ import com.ps.kor.controller.BudgetController;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
 import com.ps.kor.entity.User;
+import com.ps.kor.entity.enums.BudgetRoleType;
 import com.ps.kor.repo.BudgetRoleRepo;
 import com.ps.kor.repo.DailyBudgetRepo;
 import com.ps.kor.repo.UserRepo;
@@ -148,13 +149,12 @@ public class BudgetControllerTest {
       MockHttpServletResponse response = result.getResponse();
       BudgetRole createdRole;
 
-
       assertEquals(HttpStatus.CREATED.value(), response.getStatus());
       assertEquals(1, testRoles.size()); // make sure only one instance was created
 
       createdRole = testRoles.get(0);
       assertEquals(user, createdRole.getUser());
-      assertEquals(BudgetRole.BudgetRoleType.CREATOR, createdRole.getRoleType());
+      assertEquals(BudgetRoleType.CREATOR.rank, createdRole.getRoleType().rank);
     }
     catch (Exception ex) {
       log.error(ex.getMessage());
