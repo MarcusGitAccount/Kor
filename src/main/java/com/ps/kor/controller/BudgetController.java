@@ -1,5 +1,6 @@
 package com.ps.kor.controller;
 
+import com.ps.kor.auth.AuthenticationUtils;
 import com.ps.kor.controller.response.ResponseEntityFactory;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
@@ -29,14 +30,17 @@ public class BudgetController {
   @Autowired
   private BudgetRoleRepo budgetRoleRepo;
 
+  @Autowired
+  private AuthenticationUtils authenticationUtils;
+
   @PostMapping("/api/budget")
   public ResponseEntity create(
-      @RequestHeader("authorization") UUID creatorId,
+      @RequestHeader("authorization") String token,
       @RequestBody DailyBudget dailyBudget
       ) {
 
     // TODO: validation(if supported currency too).
-    User user = userRepo.findById(creatorId).orElse(null);
+    User user = authenticationUtils.getTokenUser(token);
 
     if (user == null) {
       return ResponseEntityFactory.buildErrorResponse(

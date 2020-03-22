@@ -1,5 +1,6 @@
 package com.ps.kor.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -31,9 +32,11 @@ public class User {
   private String email;
 
   @Column
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
 
   @Column(name = "salted_hash")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String saltedHash;
 
   @OneToMany(mappedBy = BudgetRole.USER_JOIN_COL_NAME,
