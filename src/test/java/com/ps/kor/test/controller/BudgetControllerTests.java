@@ -1,5 +1,6 @@
 package com.ps.kor.test.controller;
 
+import com.ps.kor.auth.AuthenticationUtils;
 import com.ps.kor.controller.BudgetController;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
@@ -9,11 +10,9 @@ import com.ps.kor.repo.BudgetRoleRepo;
 import com.ps.kor.repo.DailyBudgetRepo;
 import com.ps.kor.repo.UserRepo;
 import lombok.extern.log4j.Log4j2;
-import org.junit.Assert;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -31,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.ps.kor.test.util.TestHelpers.getEnclosedString;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 
@@ -41,7 +41,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(value = BudgetController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class BudgetControllerTest {
+public class BudgetControllerTests {
 
   @Autowired
   private MockMvc mockMvc;
@@ -55,17 +55,12 @@ public class BudgetControllerTest {
   @MockBean
   private BudgetRoleRepo budgetRoleRepo;
 
+  @MockBean
+  private AuthenticationUtils authUtils;
+
   private List<BudgetRole> testRoles;
 
-  private List<User> testUsers;
-
-  /**
-   * @param str
-   * @return the string argument enclosed by "
-   */
-  private String getEnclosedString(String str) {
-    return String.format("\"%s\"", str);
-  }
+  private User testUser;
 
   /**
    * Perform setup for each test:
@@ -75,7 +70,10 @@ public class BudgetControllerTest {
   @Before
   public void setupTest() {
     testRoles = new LinkedList<>();
-    testUsers = new LinkedList<>();
+
+    testUser = new User();
+    testUser.setId(UUID.randomUUID());
+    testUser.setEmail("mockup@email.com");
 
     // When a role is created during a test, save it.
     when(budgetRoleRepo.save(Mockito.any(BudgetRole.class)))
@@ -105,44 +103,32 @@ public class BudgetControllerTest {
              .findAny();
        });
 
-    when(userRepo.findById(Mockito.any(UUID.class)))
-        .then(answer -> {
-          UUID id = answer.getArgument(0);
-
-          if (testUsers == null) {
-            return null;
-          }
-          return testUsers.stream()
-              .filter(role -> role.getId().equals(id))
-              .findAny();
-        });
+    when(authUtils.getTokenUser(Mockito.any(String.class))).thenReturn(testUser);
   }
 
   /**
-   * Test the post endpoint of /api/budget.
-   * Asserting the following:
-   * - the correct CREATED HttpStatus,
-   * - one role has been created for the given used with
-   *   the appropriate type.
+   * Test the post endpoint of /api/budget
+   * Given an authenticated use
+   * When trying to create a new DailyBudget
+   * Then the following hold true:
+   * - the servers responds with CREATED http status
+   * - one role has been created for the given user with
+   *   the appropriate CREATOR type.
    */
   @Test
   public void testCreateMethod() {
-    User user = new User();
     DailyBudget budget = new DailyBudget();
 
-    user.setId(UUID.randomUUID());
-    testUsers.add(user);
     budget.setName("Test budget");
-
     RequestBuilder requestBuilder = MockMvcRequestBuilders
         .post("/api/budget")
         .characterEncoding("utf-8")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
-        .header("authorization", user.getId().toString())
+        .header("authorization", authUtils.generateToken(testUser.getEmail()))
         .content(String.format("{%s: %s}",
             getEnclosedString("id"),
-            getEnclosedString(user.getId().toString())));
+            getEnclosedString(testUser.getId().toString())));
 
     try {
       MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -153,7 +139,7 @@ public class BudgetControllerTest {
       assertEquals(1, testRoles.size()); // make sure only one instance was created
 
       createdRole = testRoles.get(0);
-      assertEquals(user, createdRole.getUser());
+      assertEquals(testUser, createdRole.getUser());
       assertEquals(BudgetRoleType.CREATOR.rank, createdRole.getRoleType().rank);
     }
     catch (Exception ex) {
