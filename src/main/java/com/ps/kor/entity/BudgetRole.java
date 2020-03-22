@@ -50,6 +50,6 @@ public class BudgetRole {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = SELF_REF_COL_NAME)
   private List<BudgetRole> createdRoles;
 
-  @ManyToMany(mappedBy = "budgetRoleList", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToMany(mappedBy = "budgetRoleList", fetch = FetchType.LAZY)
   private List<DailyBudget> dailyBudgetList;
 }

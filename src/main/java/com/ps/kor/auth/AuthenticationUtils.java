@@ -11,16 +11,21 @@ import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Constants and helper methods used in authenticating
+ * users.
+ */
 @Log4j2
-@Component
+@Service
 public class AuthenticationUtils {
 
   @Autowired
-  private static UserRepo userRepo;
+  private UserRepo userRepo;
 
   public static final String SECRET = "E9892A62FB2DED1BF34DF6FB27753E5B7BB38E46A9659EAE273D3F5E5E519EB1";
 
@@ -28,6 +33,15 @@ public class AuthenticationUtils {
 
   public static final Integer LOG_ROUNDS = 10;
 
+  /**
+   * Given the email of a user generate a Json web token
+   * using it as a payload.
+   * Token is valid for a weeks and is generated using the HS256
+   * encryption algorithm.
+   *
+   * @param email
+   * @return
+   */
   public String generateToken(String email) {
     Calendar calendar = Calendar.getInstance();
     Date expirationDate;
@@ -47,6 +61,12 @@ public class AuthenticationUtils {
         .compact();
   }
 
+  /**
+   * Given a token in string format try to parse it
+   * and retrieve the email payload from it.
+   * @param token
+   * @return
+   */
   public String getEmailFromToken(String token) {
     Jws<Claims> jws = Jwts
         .parser()
@@ -57,6 +77,13 @@ public class AuthenticationUtils {
     return jws.getBody().get("email", String.class);
   }
 
+  /**
+   * Given a token in string format try to parse it
+   * and retrieve the persisted user that is authenticated
+   * with it.
+   * @param token
+   * @return
+   */
   @Nullable
   public User getTokenUser(String token) {
     try {

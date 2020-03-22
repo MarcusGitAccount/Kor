@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Authentication endpoints.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -25,6 +28,12 @@ public class AuthenticationController {
   @Autowired
   private AuthenticationUtils authUtils;
 
+  /**
+   * Given the details of a users, validates it and persists
+   * it after generating a new salt and hashed password.
+   * @param user
+   * @return the persisted user
+   */
   @PostMapping("/signup")
   public ResponseEntity signup(@RequestBody User user) {
     // TODO: validate user: field constraints, unique email, valid password...
@@ -45,6 +54,14 @@ public class AuthenticationController {
     return ResponseEntityFactory.buildSuccesResponse(user, "Succesful signup", HttpStatus.CREATED);
   }
 
+  /**
+   * Checks whether the users exists. If so, it continues
+   * by trying to match the existing password with the one
+   * received. In case of success it creates a jwt token and it
+   * persists and return it.
+   * @param user
+   * @return
+   */
   @PostMapping("/login")
   public ResponseEntity login(@RequestBody User user) {
     // Sent data might be uncompleted
@@ -83,6 +100,11 @@ public class AuthenticationController {
     return ResponseEntityFactory.buildSuccesResponse(token, "Logged in", HttpStatus.ACCEPTED);
   }
 
+  /**
+   * Logs out a user by deleting its authentication token from the database.
+   * @param token
+   * @return
+   */
   @PostMapping("/logout")
   public ResponseEntity logout(@RequestHeader("authorization") String token) {
     if (token == null) {

@@ -11,6 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @Log4j2
 public class PopulateDatabase {
 
+  /**
+   * Populates the application database with mockup users used
+   * in manual testing the APIs.
+   * @param userRepo
+   * @return
+   */
   @Bean(name = "populateWithUsers")
   public CommandLineRunner populateWithUsers(UserRepo userRepo) {
     User first = new User();

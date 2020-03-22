@@ -40,6 +40,6 @@ public class User {
   private String saltedHash;
 
   @OneToMany(mappedBy = BudgetRole.USER_JOIN_COL_NAME,
-      fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+      fetch = FetchType.LAZY)
   private List<BudgetRole> roleList;
 }

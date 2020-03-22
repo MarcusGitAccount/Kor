@@ -44,7 +44,7 @@ public class DailyBudget {
   @OneToMany(mappedBy = "dailyBudget")
   private List<Expenditure> expenditureList;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "DailyBudget_BudgetRole",
       joinColumns = @JoinColumn(name = "budget_id"),
