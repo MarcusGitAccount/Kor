@@ -158,3 +158,12 @@ S-a ales folosirea unei baze de date MySQL. Pentru conectarea la acesta s-a ales
 ### 3.1.1. Diagrama bazei de date
 
 ![db diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/bd_diagram.PNG)
+
+## 4. TODO
+
+- move logic from controllers to particular logic classes and use those in controllers. This way we can remove the framework dependency in unit tests.
+- finish implementing the application required endpoints
+- implement the observer pattern for email notifications when the remaining budget is under a certain limit
+- add validation methods
+- add authentication filters
+- improve on the doc(class diagrams, actors presentation, implementation details, etc...)
