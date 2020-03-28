@@ -1,6 +1,6 @@
 package com.ps.kor.test.controller;
 
-import com.ps.kor.auth.AuthenticationUtils;
+import com.ps.kor.business.auth.AuthenticationUtils;
 import com.ps.kor.controller.AuthenticationController;
 import com.ps.kor.entity.User;
 import com.ps.kor.repo.AuthJWTRepo;

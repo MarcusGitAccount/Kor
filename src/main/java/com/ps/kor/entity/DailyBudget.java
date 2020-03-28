@@ -41,10 +41,10 @@ public class DailyBudget {
   private String currencyCode;
 
   @Column
-  @OneToMany(mappedBy = "dailyBudget")
+  @OneToMany(mappedBy = "dailyBudget", cascade = CascadeType.ALL)
   private List<Expenditure> expenditureList;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinTable(
       name = "DailyBudget_BudgetRole",
       joinColumns = @JoinColumn(name = "budget_id"),

@@ -1,7 +1,6 @@
 package com.ps.kor.entity;
 
 import lombok.*;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

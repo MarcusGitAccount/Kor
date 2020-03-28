@@ -1,4 +1,4 @@
-package com.ps.kor.auth;
+package com.ps.kor.business.auth;
 
 import com.ps.kor.entity.User;
 import com.ps.kor.repo.UserRepo;
@@ -10,7 +10,6 @@ import io.jsonwebtoken.impl.TextCodec;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;

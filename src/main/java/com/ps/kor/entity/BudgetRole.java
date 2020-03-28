@@ -47,7 +47,7 @@ public class BudgetRole {
   @JoinColumn(name = "creator_id")
   private BudgetRole creator;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = SELF_REF_COL_NAME)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = SELF_REF_COL_NAME)
   private List<BudgetRole> createdRoles;
 
   @ManyToMany(mappedBy = "budgetRoleList", fetch = FetchType.LAZY)

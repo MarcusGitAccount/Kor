@@ -1,6 +1,6 @@
 package com.ps.kor.controller;
 
-import com.ps.kor.auth.AuthenticationUtils;
+import com.ps.kor.business.auth.AuthenticationUtils;
 import com.ps.kor.controller.response.ResponseEntityFactory;
 import com.ps.kor.entity.AuthJWT;
 import com.ps.kor.entity.User;
