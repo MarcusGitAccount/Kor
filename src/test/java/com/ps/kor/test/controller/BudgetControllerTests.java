@@ -1,5 +1,6 @@
 package com.ps.kor.test.controller;
 
+import com.ps.kor.business.BudgetLogic;
 import com.ps.kor.business.auth.AuthenticationUtils;
 import com.ps.kor.controller.BudgetController;
 import com.ps.kor.entity.BudgetRole;
@@ -58,6 +59,9 @@ public class BudgetControllerTests {
   @MockBean
   private AuthenticationUtils authUtils;
 
+  @MockBean
+  public BudgetLogic budgetLogic;
+
   private List<BudgetRole> testRoles;
 
   private User testUser;
@@ -72,6 +76,7 @@ public class BudgetControllerTests {
     testRoles = new LinkedList<>();
 
     testUser = new User();
+    testUser.setRoleList(new LinkedList<>());
     testUser.setId(UUID.randomUUID());
     testUser.setEmail("mockup@email.com");
 
@@ -91,17 +96,23 @@ public class BudgetControllerTests {
           return answer.getArgument(0);
         });
 
-    when(budgetRoleRepo.findById(Mockito.any(UUID.class)))
-       .then(answer -> {
-         UUID id = answer.getArgument(0);
+    when(userRepo.save(Mockito.any(User.class)))
+        .then(answer -> {
+          return answer.getArgument(0);
+        });
 
-         if (testRoles == null) {
-           return null;
-         }
-         return testRoles.stream()
-             .filter(role -> role.getId().equals(id))
-             .findAny();
-       });
+
+    when(budgetRoleRepo.findById(Mockito.any(UUID.class)))
+        .then(answer -> {
+          UUID id = answer.getArgument(0);
+
+          if (testRoles == null) {
+            return null;
+          }
+          return testRoles.stream()
+              .filter(role -> role.getId().equals(id))
+              .findAny();
+        });
 
     when(authUtils.getTokenUser(Mockito.any(String.class))).thenReturn(testUser);
   }
