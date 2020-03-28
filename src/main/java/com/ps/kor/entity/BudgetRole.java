@@ -37,6 +37,7 @@ public class BudgetRole {
   private Boolean enabled;
 
   @Column(name = "role_type")
+  @Enumerated(EnumType.STRING)
   private BudgetRoleType roleType;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -50,6 +51,7 @@ public class BudgetRole {
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = SELF_REF_COL_NAME)
   private List<BudgetRole> createdRoles;
 
-  @ManyToMany(mappedBy = "budgetRoleList", fetch = FetchType.LAZY)
-  private List<DailyBudget> dailyBudgetList;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "daily_budget_id")
+  private DailyBudget dailyBudget;
 }

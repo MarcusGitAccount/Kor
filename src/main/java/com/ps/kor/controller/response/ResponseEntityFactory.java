@@ -13,11 +13,15 @@ public class ResponseEntityFactory {
   private static Map<BusinessMesageType, HttpStatus> businessTypeToHtppStatus = new HashMap<>();
 
   static {
-    businessTypeToHtppStatus.put(BusinessMesageType.USER_NOT_FOUND_AUTH,     HttpStatus.UNAUTHORIZED);
-    businessTypeToHtppStatus.put(BusinessMesageType.BUDGET_CREATION_FAIL,    HttpStatus.BAD_REQUEST);
-    businessTypeToHtppStatus.put(BusinessMesageType.BUDGET_CREATION_SUCCESS, HttpStatus.CREATED);
-    businessTypeToHtppStatus.put(BusinessMesageType.SIGNUP_SUCCESS,          HttpStatus.CREATED);
-    businessTypeToHtppStatus.put(BusinessMesageType.USER_NOT_FOUND,          HttpStatus.NOT_FOUND);
+    businessTypeToHtppStatus.put(BusinessMesageType.BUDGET_CREATION_FAIL,           HttpStatus.BAD_REQUEST);
+    businessTypeToHtppStatus.put(BusinessMesageType.USER_NOT_FOUND_AUTH,            HttpStatus.UNAUTHORIZED);
+    businessTypeToHtppStatus.put(BusinessMesageType.UNAUTHORIZED_ROLE_CREATION,     HttpStatus.UNAUTHORIZED);
+    businessTypeToHtppStatus.put(BusinessMesageType.BUDGET_CREATION_SUCCESS,        HttpStatus.CREATED);
+    businessTypeToHtppStatus.put(BusinessMesageType.ROLE_CREATION_SUCCESS,          HttpStatus.CREATED);
+    businessTypeToHtppStatus.put(BusinessMesageType.SIGNUP_SUCCESS,                 HttpStatus.CREATED);
+    businessTypeToHtppStatus.put(BusinessMesageType.USER_NOT_FOUND,                 HttpStatus.NOT_FOUND);
+    businessTypeToHtppStatus.put(BusinessMesageType.BUDGET_NOT_FOUND,               HttpStatus.NOT_FOUND);
+    businessTypeToHtppStatus.put(BusinessMesageType.USER_NOT_PART_OF_BUDGET,        HttpStatus.NOT_FOUND);
   }
 
   public static ResponseEntity<ResponseWrapper> buildSuccesResponse(

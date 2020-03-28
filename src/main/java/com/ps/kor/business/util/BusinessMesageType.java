@@ -26,7 +26,17 @@ public enum BusinessMesageType {
 
   TOKEN_EMPTY("Token is empty", false),
 
-  TOKEN_INVALID("Token is invalid", false)
+  TOKEN_INVALID("Token is invalid", false),
+
+  BUDGET_NOT_FOUND("Budget not found", false),
+
+  ROLE_CREATION_SUCCESS("Role created successfuly", false),
+
+  USER_NOT_PART_OF_BUDGET("You are taking part in the planning of this budget", true),
+
+  UNAUTHORIZED_ROLE_CREATION("You do not have the rights to create this role", true),
+
+  ALREADY_HAS_ROLE("User already has a role in the given budget", true)
 
   ;
 

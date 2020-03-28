@@ -1,8 +1,8 @@
 package com.ps.kor.business.util;
 
-public class BusinessMessage {
+public class BusinessMessage<T> {
 
-  private Object data;
+  private T data;
 
   private BusinessMesageType type;
 
@@ -10,16 +10,16 @@ public class BusinessMessage {
     this(null, type);
   }
 
-  public BusinessMessage(Object data, BusinessMesageType type) {
+  public BusinessMessage(T data, BusinessMesageType type) {
     this.data = data;
     this.type = type;
   }
 
-  public Object getData() {
+  public T getData() {
     return data;
   }
 
-  public void setData(Object data) {
+  public void setData(T data) {
     this.data = data;
   }
 
