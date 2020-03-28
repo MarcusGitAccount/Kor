@@ -27,6 +27,6 @@ public class BudgetController {
 
     BusinessMessage message = budgetLogic.create(token, dailyBudget);
 
-    return ResponseEntityFactory.buildResponse(message);
+    return ResponseEntityFactory.createResponseFromBusinessMessage(message);
   }
 }

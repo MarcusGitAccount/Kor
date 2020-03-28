@@ -16,7 +16,8 @@ public class ResponseEntityFactory {
     businessTypeToHtppStatus.put(BusinessMesageType.USER_NOT_FOUND_AUTH,     HttpStatus.UNAUTHORIZED);
     businessTypeToHtppStatus.put(BusinessMesageType.BUDGET_CREATION_FAIL,    HttpStatus.BAD_REQUEST);
     businessTypeToHtppStatus.put(BusinessMesageType.BUDGET_CREATION_SUCCESS, HttpStatus.CREATED);
-    businessTypeToHtppStatus.put(BusinessMesageType.ROLE_CREATION_FAIL,      HttpStatus.BAD_REQUEST);
+    businessTypeToHtppStatus.put(BusinessMesageType.SIGNUP_SUCCESS,          HttpStatus.CREATED);
+    businessTypeToHtppStatus.put(BusinessMesageType.USER_NOT_FOUND,          HttpStatus.NOT_FOUND);
   }
 
   public static ResponseEntity<ResponseWrapper> buildSuccesResponse(
@@ -41,7 +42,7 @@ public class ResponseEntityFactory {
     return ResponseEntity.status(status).body(wrapper);
   }
 
-  public static ResponseEntity<ResponseWrapper> buildResponse(BusinessMessage businessMessage) {
+  public static ResponseEntity<ResponseWrapper> createResponseFromBusinessMessage(BusinessMessage businessMessage) {
     HttpStatus status = HttpStatus.BAD_REQUEST;
     BusinessMesageType type = businessMessage.getType();
 

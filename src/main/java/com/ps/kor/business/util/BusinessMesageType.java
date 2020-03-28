@@ -8,7 +8,27 @@ public enum BusinessMesageType {
 
   ROLE_CREATION_FAIL("Could not create role", true),
 
-  BUDGET_CREATION_SUCCESS("Daily budget and creator role created", false);
+  BUDGET_CREATION_SUCCESS("Daily budget and creator role created", false),
+
+  USER_CREATION_FAIL("Failed creating user", true),
+
+  SIGNUP_SUCCESS("Successful signup", false),
+
+  USER_NOT_FOUND("User does not exist", false),
+
+  INVALID_PASSWORD("Invalid password", true),
+
+  ALREADY_LOGGED_IN("User already logged in.", false),
+
+  LOG_IN_SUCCESS("Logged in", false),
+
+  LOG_OUT_SUCESS("Logged out", false),
+
+  TOKEN_EMPTY("Token is empty", false),
+
+  TOKEN_INVALID("Token is invalid", false)
+
+  ;
 
   private String details;
 
