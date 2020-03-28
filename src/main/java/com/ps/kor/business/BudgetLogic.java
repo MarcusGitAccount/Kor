@@ -1,9 +1,8 @@
 package com.ps.kor.business;
 
 import com.ps.kor.business.auth.AuthenticationUtils;
-import com.ps.kor.business.util.BusinessMesageType;
 import com.ps.kor.business.util.BusinessMessage;
-import com.ps.kor.controller.response.ResponseEntityFactory;
+import com.ps.kor.business.validation.RoleLogicValidation;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
 import com.ps.kor.entity.User;
@@ -12,7 +11,6 @@ import com.ps.kor.repo.BudgetRoleRepo;
 import com.ps.kor.repo.DailyBudgetRepo;
 import com.ps.kor.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import static com.ps.kor.business.util.BusinessMesageType.*;
@@ -54,6 +52,7 @@ public class BudgetLogic {
     role.setRoleType(BudgetRoleType.CREATOR);
     role.setEnabled(true);
     role.setUser(user);
+    role.setDailyBudget(dailyBudget);
 
     dailyBudget.setBudgetRoleList(Collections.singletonList(role));
     if (dailyBudget.getDate() == null) {
@@ -71,7 +70,11 @@ public class BudgetLogic {
 
     user.getRoleList().add(role);
     user = userRepo.save(user);
+
+    // Prevent infinite loop
     user.setRoleList(null);
+    role.setDailyBudget(null);
     return new BusinessMessage(dailyBudget, BUDGET_CREATION_SUCCESS);
   }
+
 }
