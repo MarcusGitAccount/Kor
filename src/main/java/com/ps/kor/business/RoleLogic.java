@@ -9,7 +9,6 @@ import com.ps.kor.entity.DailyBudget;
 import com.ps.kor.entity.User;
 import com.ps.kor.repo.BudgetRoleRepo;
 import com.ps.kor.repo.DailyBudgetRepo;
-import com.ps.kor.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,6 @@ import java.util.UUID;
 
 @Service
 public class RoleLogic {
-
-  @Autowired
-  private UserRepo userRepo;
 
   @Autowired
   private DailyBudgetRepo dailyBudgetRepo;
@@ -67,22 +63,9 @@ public class RoleLogic {
       return validationMessage;
     }
 
-//    User beneficiary = userRepo.findById(role.getUser().getId()).orElse(null);
-
     role.setEnabled(true);
     role.setDailyBudget(budget);
     role.setCreator(initiatorRole);
-
-//    budget.getBudgetRoleList().add(role);
-//    if (beneficiary != null) {
-//      beneficiary.getRoleList().add(role);
-//    }
-//
-//    userRepo.save(beneficiary);
-//    dailyBudgetRepo.save(budget);
-
-
-
     role = budgetRoleRepo.save(role);
     if (role == null) {
       return new BusinessMessage(BusinessMesageType.ROLE_CREATION_FAIL);
