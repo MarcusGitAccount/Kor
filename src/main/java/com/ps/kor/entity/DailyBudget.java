@@ -47,4 +47,7 @@ public class DailyBudget {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "dailyBudget")
   private List<BudgetRole> budgetRoleList;
 
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "dailyBudget")
+  private List<Alert> alertList;
+
 }

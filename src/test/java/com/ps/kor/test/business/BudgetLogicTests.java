@@ -3,7 +3,7 @@ package com.ps.kor.test.business;
 import com.ps.kor.TestingConfiguration;
 import com.ps.kor.business.BudgetLogic;
 import com.ps.kor.business.auth.AuthenticationUtils;
-import com.ps.kor.business.util.BusinessMessage;
+import com.ps.kor.business.util.message.BusinessMessage;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
 import com.ps.kor.entity.User;
