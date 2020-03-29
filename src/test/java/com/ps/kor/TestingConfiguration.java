@@ -1,9 +1,8 @@
 package com.ps.kor;
 
+import com.ps.kor.business.alert.util.AlertManager;
 import com.ps.kor.business.auth.AuthenticationUtils;
-import com.ps.kor.repo.BudgetRoleRepo;
-import com.ps.kor.repo.DailyBudgetRepo;
-import com.ps.kor.repo.UserRepo;
+import com.ps.kor.repo.*;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,8 +28,23 @@ public class TestingConfiguration {
   }
 
   @Bean
+  public AuthJWTRepo authJWTRepo() {
+    return Mockito.mock(AuthJWTRepo.class);
+  }
+
+  @Bean
+  public ExpenditureRepo expenditureRepo() {
+    return Mockito.mock(ExpenditureRepo.class);
+  }
+
+  @Bean
   public AuthenticationUtils authUtils() {
     return Mockito.mock(AuthenticationUtils.class);
+  }
+
+  @Bean
+  public AlertManager alertManager() {
+    return Mockito.mock(AlertManager.class);
   }
 
 }
