@@ -1,4 +1,4 @@
-package com.ps.kor.business.util;
+package com.ps.kor.business.util.message;
 
 public class BusinessMessage<T> {
 
