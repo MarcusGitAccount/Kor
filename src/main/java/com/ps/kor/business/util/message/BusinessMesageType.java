@@ -1,4 +1,4 @@
-package com.ps.kor.business.util;
+package com.ps.kor.business.util.message;
 
 public enum BusinessMesageType {
 
@@ -32,13 +32,19 @@ public enum BusinessMesageType {
 
   ROLE_CREATION_SUCCESS("Role created successfuly", false),
 
+  EXPENDITURE_CREATION_SUCCESS("Expenditure created successfuly", false),
+
+  EXPENDITURE_CREATION_FAIL("Failed creating expenditure", false),
+
   USER_NOT_PART_OF_BUDGET("You are taking part in the planning of this budget", true),
 
-  UNAUTHORIZED_ROLE_CREATION("You do not have the rights to create this role", true),
+  UNAUTHORIZED_OPERATION("You do not have the rights to perform this operation", true),
 
-  ALREADY_HAS_ROLE("User already has a role in the given budget", true)
+  ALREADY_HAS_ROLE("User already has a role in the given budget", true),
 
-  ;
+  NO_REMAINING_BUDGET("No remaning budget left for this expenditure", true),
+
+  OPERATION_COMPLETED("Completed operation succesfully", true);
 
   private String details;
 

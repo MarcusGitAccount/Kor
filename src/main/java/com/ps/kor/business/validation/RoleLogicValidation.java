@@ -14,11 +14,12 @@ public class RoleLogicValidation {
       return new BusinessMessage(false, BusinessMesageType.USER_NOT_PART_OF_BUDGET);
     }
     if (!checkIfCanPerformActionType(initiator, BudgetRoleType.ADMIN)) {
-      return new BusinessMessage(false, BusinessMesageType.UNAUTHORIZED_ROLE_CREATION);
+      return new BusinessMessage(false, BusinessMesageType.UNAUTHORIZED_OPERATION);
     }
     if (initiator.getRoleType().rank <= toBeCreated.getRoleType().rank) {
-      return new BusinessMessage(false, BusinessMesageType.UNAUTHORIZED_ROLE_CREATION);
+      return new BusinessMessage(false, BusinessMesageType.UNAUTHORIZED_OPERATION);
     }
+
 
     return new BusinessMessage(true, null);
   }

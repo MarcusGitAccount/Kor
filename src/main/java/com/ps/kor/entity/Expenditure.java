@@ -34,10 +34,6 @@ public class Expenditure {
   @Column(nullable = false, columnDefinition = "int default 0")
   private Integer amount;
 
-  @Column(length = 3, name = "currency_code")
-  @NotNull
-  private String currencyCode;
-
   @Column
   private String comment;
 
