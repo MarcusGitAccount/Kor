@@ -1,8 +1,7 @@
 package com.ps.kor.business;
 
 import com.ps.kor.business.auth.AuthenticationUtils;
-import com.ps.kor.business.util.BusinessMessage;
-import com.ps.kor.business.validation.RoleLogicValidation;
+import com.ps.kor.business.util.message.BusinessMessage;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
 import com.ps.kor.entity.User;
@@ -13,7 +12,7 @@ import com.ps.kor.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.ps.kor.business.util.BusinessMesageType.*;
+import static com.ps.kor.business.util.message.BusinessMesageType.*;
 import java.util.Collections;
 import java.util.Date;
 

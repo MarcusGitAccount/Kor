@@ -1,8 +1,8 @@
 package com.ps.kor.business;
 
 import com.ps.kor.business.auth.AuthenticationUtils;
-import com.ps.kor.business.util.BusinessMesageType;
-import com.ps.kor.business.util.BusinessMessage;
+import com.ps.kor.business.util.message.BusinessMesageType;
+import com.ps.kor.business.util.message.BusinessMessage;
 import com.ps.kor.entity.AuthJWT;
 import com.ps.kor.entity.User;
 import com.ps.kor.repo.AuthJWTRepo;

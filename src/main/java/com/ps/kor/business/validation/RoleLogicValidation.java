@@ -1,7 +1,7 @@
 package com.ps.kor.business.validation;
 
-import com.ps.kor.business.util.BusinessMesageType;
-import com.ps.kor.business.util.BusinessMessage;
+import com.ps.kor.business.util.message.BusinessMesageType;
+import com.ps.kor.business.util.message.BusinessMessage;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.enums.BudgetRoleType;
 import org.springframework.stereotype.Service;

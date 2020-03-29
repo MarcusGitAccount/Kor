@@ -1,7 +1,7 @@
 package com.ps.kor.controller.response;
 
-import com.ps.kor.business.util.BusinessMesageType;
-import com.ps.kor.business.util.BusinessMessage;
+import com.ps.kor.business.util.message.BusinessMesageType;
+import com.ps.kor.business.util.message.BusinessMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

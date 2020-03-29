@@ -2,7 +2,7 @@ package com.ps.kor.controller;
 
 import com.ps.kor.business.BudgetLogic;
 
-import com.ps.kor.business.util.BusinessMessage;
+import com.ps.kor.business.util.message.BusinessMessage;
 import com.ps.kor.controller.response.ResponseEntityFactory;
 import com.ps.kor.entity.DailyBudget;
 import org.springframework.beans.factory.annotation.Autowired;
