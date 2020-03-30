@@ -270,3 +270,117 @@ S-a ales folosirea unei baze de date MySQL. Pentru conectarea la acesta s-a ales
 ### 3.1.2. Diagrama bazei de date
 
 ![db diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/bd_diagram.PNG)
+
+## 3.2. Sistemul de alerte
+
+În momentul în care sistemul încearcă să valideze adăugarea unei cheltuieli cu o sumă mai mare decât cea disponibilă la acel moment în bugetul aferent acesta va crea o alertă pe care o va salva în baza de date. În viitor această alertă va fi transmisă via email administratorilor bugetului.
+
+### 3.2.1. Diagrama sistemului de alerte
+
+După cum se poate vedea din diagrama acestuia, s-a folosit design pattern-ul Observer pentru a notifica componenta care se ocupă de crearea alertelor.
+
+![alert system diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/alert_system.PNG)
+
+Este nevoie de o o componentă suplimentară pentru a lega și configura cele 2 servicii din cadrul pattern-ului implementat deoarece dorim să nu le instanțiem manual, ci să lăsăm framework-ul SpringBoot să se ocupe de creearea și managementul componentelor aplicației.
+
+## 4. Testarea aplicației
+
+Pentru aceasta s-a folosit Junit4 pentru testarea unitară a componentelor aplicației și Mockito pentru a imita datele și operațiile la nivel de bază de date.
+
+Următorii pași au fost urmați:
+
+1. Decuplarea logicii de la nivelul controller-ului în clase specializate pentru a elimina dependența de framework la nivelul testării unitare(au fost totuși scrise și efectuate și teste la nivel de controller care vor fi păstrate în continuare deoarece sunt util). Exemplu decuplare logică la nivel de controller: 
+
+```Java
+  @PostMapping("/login")
+  public ResponseEntity login(@RequestBody User user) {
+    BusinessMessage message = authLogic.login(user);
+    return ResponseEntityFactory.createResponseFromBusinessMessage(message);
+  }
+
+```
+
+2. Crearea unei configurări de test pentru a putea 'mock-ui' componente aplicației:
+```Java
+@Profile("testing")
+@Configuration
+public class TestingConfiguration {
+
+  @Bean
+  public UserRepo userRepo() {
+    return Mockito.mock(UserRepo.class);
+  }
+
+  @Bean
+  public DailyBudgetRepo dailyBudgetRepo() {
+    return Mockito.mock(DailyBudgetRepo.class);
+  }
+ 
+  /* ..... */
+ }
+```
+
+3. Imitarea aplicațiilor la nivelul de service layer. Pentru aceasta s-au folosit diferite containere pentru a simula operațiile pe baza de date. Exemplu:
+
+```Java
+ when(budgetRoleRepo.save(Mockito.any(BudgetRole.class)))
+  .then(answer -> {
+    BudgetRole role = answer.getArgument(0);
+
+    if (testRoles != null) {
+      testRoles.add(role);
+    }
+    return role;
+  });
+          
+  when(budgetRoleRepo.findById(Mockito.any(UUID.class)))
+      .then(answer -> {
+        UUID id = answer.getArgument(0);
+    
+        if (testRoles == null) {
+          return null;
+        }
+        return testRoles.stream()
+            .filter(role -> role.getId().equals(id))
+            .findAny();
+      });
+```
+
+4. (Pasul final: profit :D). Apeluri către nivelul del business logic al aplicației și aserțiunile aferente validării acestora:
+
+```Java
+    @Test
+    public void testCreateMethod() {
+      DailyBudget budget = new DailyBudget();
+
+      budget.setName("Test budget");
+      BusinessMessage<DailyBudget> message = budgetLogic.create("token lol", budget);
+      BudgetRole createdRole = null;
+
+      assertEquals(1, testRoles.size()); // make sure only one instance was created
+      createdRole = testRoles.get(0);
+      assertEquals(testUser, createdRole.getUser());
+      assertEquals(BudgetRoleType.CREATOR.rank, createdRole.getRoleType().rank);
+    }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
