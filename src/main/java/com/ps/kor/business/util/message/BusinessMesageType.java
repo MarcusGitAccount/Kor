@@ -44,7 +44,11 @@ public enum BusinessMesageType {
 
   NO_REMAINING_BUDGET("No remaning budget left for this expenditure", true),
 
-  OPERATION_COMPLETED("Completed operation succesfully", true);
+  OPERATION_COMPLETED("Completed operation succesfully", true),
+
+  REPORT_CREATED("Generated report data.", false),
+
+  REPORT_TYPE_NOT_FOUND("CAN NOT CREATE REPORT OF GIVEN TYPE", true);
 
   private String details;
 
