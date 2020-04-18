@@ -34,7 +34,14 @@ public class ExpenditureLogic {
   @Autowired
   private ExpenditureLogicValidation expenditureLogicValidation;
 
-  public BusinessMessage createExpendtiure(String token, UUID budgetId, Expenditure expenditure) {
+  /**
+   * @param token - auth token
+   * @param budgetId - budget to which the expenditure is tied
+   * @param expenditure
+   * @return
+   */
+  public BusinessMessage createExpendtiure(String token, UUID budgetId,
+                                           Expenditure expenditure) {
     User user = authUtils.getTokenUser(token);
 
     if (user == null) {
@@ -60,11 +67,13 @@ public class ExpenditureLogic {
       return validationMessage;
     }
 
+    expenditure.setBudgetRole(initiatorRole);
     expenditure = expenditureRepo.save(expenditure);
     if (expenditure == null) {
       return new BusinessMessage(BusinessMesageType.EXPENDITURE_CREATION_FAIL);
     }
 
+    expenditure.setBudgetRole(null);
     expenditure.setDailyBudget(null);
     return new BusinessMessage(expenditure, BusinessMesageType.EXPENDITURE_CREATION_SUCCESS);
   }

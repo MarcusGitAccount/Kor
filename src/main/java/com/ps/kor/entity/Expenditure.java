@@ -45,4 +45,8 @@ public class Expenditure {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "daily_budget_id")
   private DailyBudget dailyBudget;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "role_id")
+  private BudgetRole budgetRole;
 }

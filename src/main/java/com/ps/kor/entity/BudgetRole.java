@@ -54,4 +54,7 @@ public class BudgetRole {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "daily_budget_id")
   private DailyBudget dailyBudget;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "budgetRole")
+  private List<Expenditure> createdExpenditures;
 }
