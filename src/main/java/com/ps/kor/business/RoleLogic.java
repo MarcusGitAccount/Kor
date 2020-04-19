@@ -3,6 +3,7 @@ package com.ps.kor.business;
 import com.ps.kor.business.auth.AuthenticationUtils;
 import com.ps.kor.business.util.message.BusinessMesageType;
 import com.ps.kor.business.util.message.BusinessMessage;
+import com.ps.kor.business.validation.DailyBudgetLogicValidation;
 import com.ps.kor.business.validation.RoleLogicValidation;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
@@ -12,6 +13,7 @@ import com.ps.kor.repo.DailyBudgetRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,6 +31,9 @@ public class RoleLogic {
   @Autowired
   private RoleLogicValidation roleLogicValidation;
 
+  @Autowired
+  private DailyBudgetLogicValidation budgetLogicValidation;
+
   /**
    * Logic to create a role by an authenticated user with a given token,
    * for a given budget.
@@ -38,11 +43,7 @@ public class RoleLogic {
    * @return
    */
   public BusinessMessage createRole(String token, UUID budgetId, BudgetRole role) {
-    User user = authUtils.getTokenUser(token);
 
-    if (user == null) {
-      return new BusinessMessage(BusinessMesageType.USER_NOT_FOUND);
-    }
     if (budgetId == null) {
       return new BusinessMessage(BusinessMesageType.BUDGET_NOT_FOUND);
     }
@@ -55,9 +56,16 @@ public class RoleLogic {
       return new BusinessMessage(BusinessMesageType.ALREADY_HAS_ROLE);
     }
 
-    BudgetRole initiatorRole = budgetRoleRepo.findByUserAndBudget(budget, user).orElse(null);
-    BusinessMessage<Boolean> validationMessage = roleLogicValidation.createRoleValidation(initiatorRole, role);
+    BusinessMessage<BudgetRole> budgetRoleValidation = budgetLogicValidation
+        .validateUserHasBudgetRole(budget, token);
 
+    if (budgetRoleValidation.getData() == null) {
+      return new BusinessMessage<>(null, budgetRoleValidation.getType());
+    }
+
+    BudgetRole initiatorRole = budgetRoleValidation.getData();
+    BusinessMessage<Boolean> validationMessage =
+        roleLogicValidation.createRoleValidation(initiatorRole, role);
     if (!validationMessage.getData()) {
       validationMessage.setData(null);
       return validationMessage;

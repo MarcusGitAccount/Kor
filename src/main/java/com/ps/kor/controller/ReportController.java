@@ -18,10 +18,11 @@ public class ReportController {
 
   @GetMapping("/api/report")
   public ResponseEntity create(
+      @RequestHeader("authorization") String token,
       @RequestParam("type") ReportFactory.ReportType type,
       @RequestParam("budget") UUID budgetId
   ) {
-    BusinessMessage message = reportLogic.getReportDataForBudget(budgetId, type);
+    BusinessMessage message = reportLogic.getReportDataForBudget(budgetId, token, type);
 
     return ResponseEntityFactory.createResponseFromBusinessMessage(message);
   }

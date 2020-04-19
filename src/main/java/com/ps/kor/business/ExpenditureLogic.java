@@ -3,6 +3,7 @@ package com.ps.kor.business;
 import com.ps.kor.business.auth.AuthenticationUtils;
 import com.ps.kor.business.util.message.BusinessMesageType;
 import com.ps.kor.business.util.message.BusinessMessage;
+import com.ps.kor.business.validation.DailyBudgetLogicValidation;
 import com.ps.kor.business.validation.ExpenditureLogicValidation;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
@@ -32,6 +33,9 @@ public class ExpenditureLogic {
   private BudgetRoleRepo budgetRoleRepo;
 
   @Autowired
+  private DailyBudgetLogicValidation budgetLogicValidation;
+
+  @Autowired
   private ExpenditureLogicValidation expenditureLogicValidation;
 
   /**
@@ -42,11 +46,6 @@ public class ExpenditureLogic {
    */
   public BusinessMessage createExpendtiure(String token, UUID budgetId,
                                            Expenditure expenditure) {
-    User user = authUtils.getTokenUser(token);
-
-    if (user == null) {
-      return new BusinessMessage(BusinessMesageType.USER_NOT_FOUND);
-    }
     if (budgetId == null) {
       return new BusinessMessage(BusinessMesageType.BUDGET_NOT_FOUND);
     }
@@ -58,7 +57,14 @@ public class ExpenditureLogic {
 
     expenditure.setDailyBudget(budget);
 
-    BudgetRole initiatorRole = budgetRoleRepo.findByUserAndBudget(budget, user).orElse(null);
+    BusinessMessage<BudgetRole> budgetRoleValidation = budgetLogicValidation
+        .validateUserHasBudgetRole(budget, token);
+
+    if (budgetRoleValidation.getData() == null) {
+      return budgetRoleValidation;
+    }
+
+    BudgetRole initiatorRole = budgetRoleValidation.getData();
     BusinessMessage<Boolean> validationMessage = expenditureLogicValidation
         .createExpenditureValidation(initiatorRole, expenditure);
 
