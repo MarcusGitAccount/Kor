@@ -1,5 +1,6 @@
 package com.ps.kor.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
@@ -42,6 +43,7 @@ public class Expenditure {
   @NotNull
   private ExpenditureType type;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "daily_budget_id")
   private DailyBudget dailyBudget;

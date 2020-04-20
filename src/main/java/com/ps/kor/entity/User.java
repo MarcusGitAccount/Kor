@@ -1,5 +1,6 @@
 package com.ps.kor.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.Type;
@@ -39,6 +40,7 @@ public class User {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String saltedHash;
 
+  @JsonIgnore
   @OneToMany(mappedBy = BudgetRole.USER_JOIN_COL_NAME,
       fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<BudgetRole> roleList;

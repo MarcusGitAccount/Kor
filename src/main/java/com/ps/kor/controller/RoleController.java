@@ -27,4 +27,13 @@ public class RoleController {
 
     return ResponseEntityFactory.createResponseFromBusinessMessage(message);
   }
+
+  @GetMapping("/api/role")
+  public ResponseEntity getAllUserRoles(
+      @RequestHeader("authorization") String token) {
+
+    BusinessMessage message = roleLogic.retrieveRolesForUser(token);
+
+    return ResponseEntityFactory.createResponseFromBusinessMessage(message);
+  }
 }
