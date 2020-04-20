@@ -48,7 +48,9 @@ public enum BusinessMesageType {
 
   REPORT_CREATED("Generated report data.", false),
 
-  REPORT_TYPE_NOT_FOUND("CAN NOT CREATE REPORT OF GIVEN TYPE", true);
+  REPORT_TYPE_NOT_FOUND("CAN NOT CREATE REPORT OF GIVEN TYPE", true),
+
+  DATA_QUERIED("Data succesfully queries and retrieved", false);
 
   private String details;
 
