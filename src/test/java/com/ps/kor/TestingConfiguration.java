@@ -2,6 +2,8 @@ package com.ps.kor;
 
 import com.ps.kor.business.alert.util.AlertManager;
 import com.ps.kor.business.auth.AuthenticationUtils;
+import com.ps.kor.business.report.impl.CountSumByTypeReport;
+import com.ps.kor.business.report.impl.CountSumByTypeRoleReport;
 import com.ps.kor.repo.*;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +47,16 @@ public class TestingConfiguration {
   @Bean
   public AlertManager alertManager() {
     return Mockito.mock(AlertManager.class);
+  }
+
+  @Bean
+  public CountSumByTypeRoleReport countSumByTypeRoleReport() {
+    return Mockito.mock(CountSumByTypeRoleReport.class);
+  }
+
+  @Bean
+  public CountSumByTypeReport countSumByTypeReport() {
+    return Mockito.mock(CountSumByTypeReport.class);
   }
 
 }
