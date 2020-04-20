@@ -259,7 +259,7 @@ Exemplu răspuns returnat pentru un scenariu de succes:
 
 S-a ales folosirea unei baze de date MySQL. Pentru conectarea la acesta s-a ales folosirea ORM-ului Hibernate. În acest mod pentru partea de modelare câmpurile entităților sunt adnotate specifi în funcției de maparea la o coloană corespondentă din tabelele bazei de date. Pe partea de tranzacționare și mapare a query-rilor se vor folosi componenete SpringBoot, și anume JPA Repositories.
 
-### 3.1.1. Enități folosite
+### 3.1.1. Entități folosite
 
 - _Alert_, stochează alertele aferente unui buget(e.x. alertă de depășire limită cheltuieli)
 - _AuthJWT_, salvează tokenele JWT folosite pentru autentificare utilizatorilor în aplicație
@@ -267,6 +267,7 @@ S-a ales folosirea unei baze de date MySQL. Pentru conectarea la acesta s-a ales
 - _Expenditure_, cuprinde detalii despre fiecare cheltuială efectuată(e.x. momentul de timp la care a fost introdusă, totalul cheltuit, utilizatorul care a introdus-o, bugetul de care aparține)
 - _User_, a cărei entry-uri sunt identifcare unic de către email și UUID
 - _DailyBudget_, conține detalii referitoare la fiecare buget creat în aplicație și anume ziua pentru care este creat și totatul care poate fi cheltuit
+
 ### 3.1.2. Diagrama bazei de date
 
 ![db diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/bd_diagram.PNG)
@@ -282,6 +283,43 @@ După cum se poate vedea din diagrama acestuia, s-a folosit design pattern-ul Ob
 ![alert system diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/alert_system.PNG)
 
 Este nevoie de o o componentă suplimentară pentru a lega și configura cele 2 servicii din cadrul pattern-ului implementat deoarece dorim să nu le instanțiem manual, ci să lăsăm framework-ul SpringBoot să se ocupe de creearea și managementul componentelor aplicației.
+
+## 3.3 Sistemul de rapoarte
+
+Acesta a fost implementat pentru a permite utilizatorilor care manipulează un buget să vizualizeze date agregate și statistici referitoare la acesta. La momentul actual, în aplicație sunt prezente următoarele tipurile de rapoarte:
+- *CountSumByTypeReport*, permite vizualizarea numărului de cheltuieli și suma acestora în pentru fiecare tip de cheltuială
+- *CountSumByTypeRoleReport*, permite vizualizarea numărului de cheltuieli și suma acestora pentru fiecare tip de cheltuială și utilizator care le-a adăugat
+
+### 3.3.1. Query-uri de agregare
+
+Pentru a obține datele pentru rapoarte, au fost implementate următoarele query-uri JPQL în repository-ul aferent entității _Expenditure_:
+
+```Java
+  @Query(value =
+    "select new com.ps.kor.business.report.aggregation.CountSumByTypeAggregation(" +
+    "e.type, sum(e.amount), count(e.amount)) " +
+    "from Expenditure e " +
+    "where e.dailyBudget = :budget " +
+    "group by e.type "
+  )
+  List<CountSumByTypeAggregation> countAndSumByType(@Param("budget") DailyBudget budget);
+
+  @Query(value =
+      "select new com.ps.kor.business.report.aggregation.CountSumByTypeRoleAggregation(" +
+          "concat(e.budgetRole.user.firstName, ' ', e.budgetRole.user.lastName), " +
+          "e.type, sum(e.amount), count(e.amount)) " +
+          "from Expenditure e " +
+          "where e.dailyBudget = :budget " +
+          "group by e.type, e.budgetRole"
+  )
+  List<CountSumByTypeRoleAggregation> countAndSumByTypeAndRole(@Param("budget") DailyBudget budget);
+```
+
+### 3.3.2. Diagrama sistemului de rapoarte
+
+Pentru implementarea sistemului de rapoarte a fost folosit design pattern-ul Factory.
+
+![report system diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/report_system.PNG)
 
 ## 4. Testarea aplicației
 
@@ -334,16 +372,16 @@ public class TestingConfiguration {
   });
           
   when(budgetRoleRepo.findById(Mockito.any(UUID.class)))
-      .then(answer -> {
-        UUID id = answer.getArgument(0);
-    
-        if (testRoles == null) {
-          return null;
-        }
-        return testRoles.stream()
-            .filter(role -> role.getId().equals(id))
-            .findAny();
-      });
+  .then(answer -> {
+    UUID id = answer.getArgument(0);
+
+    if (testRoles == null) {
+      return null;
+    }
+    return testRoles.stream()
+        .filter(role -> role.getId().equals(id))
+        .findAny();
+  });
 ```
 
 4. (Pasul final: profit :D). Apeluri către nivelul del business logic al aplicației și aserțiunile aferente validării acestora:
@@ -364,7 +402,20 @@ public class TestingConfiguration {
     }
 ```
 
+## 4.1. Testarea sistemului de raporte
 
+Folosindu-se aceeași configurație de test, și aceeași logică și idee de a mockuire a componentelor aplicației, a fost scris următorul test pentru a asigura implementarea corectă a design pattern-ului Factory pe care sistemul de rapoarte îl folosește:
+
+```Java
+  @Test
+  public void testFactoryCreation() {
+    Report report1 = reportFactory.getInstance(ReportFactory.ReportType.CountAndSumByType);
+    Report report2 = reportFactory.getInstance(ReportFactory.ReportType.CountAndSumByTypeRole);
+
+    Assertions.assertTrue(report1 instanceof CountSumByTypeReport);
+    Assertions.assertTrue(report2 instanceof CountSumByTypeRoleReport);
+  }
+```
 
 
 
