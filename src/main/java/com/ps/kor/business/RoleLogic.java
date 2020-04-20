@@ -83,4 +83,22 @@ public class RoleLogic {
     role.setDailyBudget(null);
     return new BusinessMessage(role, BusinessMesageType.ROLE_CREATION_SUCCESS);
   }
+
+  public BusinessMessage retrieveRolesForUser(String token) {
+    User user = authUtils.getTokenUser(token);
+
+    if (user == null) {
+      return new BusinessMessage(BusinessMesageType.USER_NOT_FOUND);
+    }
+
+    List<BudgetRole> roles = budgetRoleRepo.findByUser(user);
+
+    for (BudgetRole role: roles) {
+      role.getDailyBudget().setExpenditureList(null);
+      role.getDailyBudget().setAlertList(null);
+      role.getDailyBudget().setBudgetRoleList(null);
+    }
+
+    return new BusinessMessage(roles, BusinessMesageType.DATA_QUERIED);
+  }
 }
