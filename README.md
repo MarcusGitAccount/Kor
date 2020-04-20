@@ -253,6 +253,40 @@ Exemplu răspuns returnat pentru un scenariu de succes:
 }
 ```
 
+###### GET */api/expenditurebudget=budget_id&type=report=report_type*
+
+- permite generarea unui raport de tip furnizat ca și parametru
+
+Următoarele headere trebuie setate pentru a putea face request-ul:
+
+| Nume  | Valoare |
+| ------ | ------ |
+| Authorization | Token-ul de autentificare a autilizatorului logat|
+
+Exemplu răspuns returnat pentru un scenariu de succes:
+
+```JSON
+{
+    "data": {
+        "header": [
+            "Username", "Count", "Total amount", "Expenditure type"
+        ],
+        "entries": [
+            ["John Doe", "56", "1", "BILL"],
+            ["Karl Sorw", "300", "1", "BILL"],
+            ["John Doe", "25", "1", "FOOD"],
+            ["Karl Sorw", "75", "1", "FOOD"],
+            ["John Doe", "1300", "2", "LARGE"],
+            ["Karl Sorw", "100", "1", "MISC"]
+        ]
+    },
+    "messages": [
+        "Generated report data."
+    ],
+    "errorMessages": []
+}
+```
+
 ## 3. Implementare
 
 ### 3.1. Proiectarea bazei de date
