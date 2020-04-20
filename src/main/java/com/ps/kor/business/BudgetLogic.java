@@ -1,9 +1,12 @@
 package com.ps.kor.business;
 
 import com.ps.kor.business.auth.AuthenticationUtils;
+import com.ps.kor.business.util.message.BusinessMesageType;
 import com.ps.kor.business.util.message.BusinessMessage;
+import com.ps.kor.business.validation.DailyBudgetLogicValidation;
 import com.ps.kor.entity.BudgetRole;
 import com.ps.kor.entity.DailyBudget;
+import com.ps.kor.entity.Expenditure;
 import com.ps.kor.entity.User;
 import com.ps.kor.entity.enums.BudgetRoleType;
 import com.ps.kor.repo.BudgetRoleRepo;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import static com.ps.kor.business.util.message.BusinessMesageType.*;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class BudgetLogic {
@@ -30,6 +34,9 @@ public class BudgetLogic {
 
   @Autowired
   private AuthenticationUtils authenticationUtils;
+
+  @Autowired
+  private DailyBudgetLogicValidation budgetLogicValidation;
 
   /**
    * Persists a DailyBudget entity and a new CREATOR role
@@ -74,6 +81,30 @@ public class BudgetLogic {
     user.setRoleList(null);
     role.setDailyBudget(null);
     return new BusinessMessage(dailyBudget, BUDGET_CREATION_SUCCESS);
+  }
+
+  public BusinessMessage<DailyBudget> retrieveById(String token, UUID budgetId) {
+    if (budgetId == null) {
+      return new BusinessMessage(BusinessMesageType.BUDGET_NOT_FOUND);
+    }
+
+    DailyBudget budget = dailyBudgetRepo.findById(budgetId).orElse(null);
+    if (budget == null) {
+      return new BusinessMessage(BusinessMesageType.BUDGET_NOT_FOUND);
+    }
+
+    BusinessMessage<BudgetRole> budgetRoleValidation = budgetLogicValidation
+        .validateUserHasBudgetRole(budget, token);
+
+    if (budgetRoleValidation.getData() == null) {
+      return new BusinessMessage<>(null, budgetRoleValidation.getType());
+    }
+
+    for (Expenditure expenditure: budget.getExpenditureList()) {
+      expenditure.getBudgetRole().setDailyBudget(null);
+    }
+
+    return new BusinessMessage<>(budget, DATA_QUERIED);
   }
 
 }

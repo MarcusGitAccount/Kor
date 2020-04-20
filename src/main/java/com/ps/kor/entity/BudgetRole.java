@@ -1,5 +1,6 @@
 package com.ps.kor.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
@@ -48,6 +49,7 @@ public class BudgetRole {
   @JoinColumn(name = "creator_id")
   private BudgetRole creator;
 
+  @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = SELF_REF_COL_NAME)
   private List<BudgetRole> createdRoles;
 
@@ -55,6 +57,7 @@ public class BudgetRole {
   @JoinColumn(name = "daily_budget_id")
   private DailyBudget dailyBudget;
 
+  @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "budgetRole")
   private List<Expenditure> createdExpenditures;
 }

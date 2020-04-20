@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 /**
  * Controller to manipulate and manage
  * budget operations
@@ -26,6 +28,17 @@ public class BudgetController {
       ) {
 
     BusinessMessage message = budgetLogic.create(token, dailyBudget);
+
+    return ResponseEntityFactory.createResponseFromBusinessMessage(message);
+  }
+
+  @GetMapping("/api/budget")
+  public ResponseEntity getById(
+      @RequestHeader("authorization") String token,
+      @RequestParam("budget") UUID budgetId
+  ) {
+
+    BusinessMessage message = budgetLogic.retrieveById(token, budgetId);
 
     return ResponseEntityFactory.createResponseFromBusinessMessage(message);
   }
