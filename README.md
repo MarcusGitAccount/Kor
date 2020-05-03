@@ -355,6 +355,13 @@ Pentru implementarea sistemului de rapoarte a fost folosit design pattern-ul Fac
 
 ![report system diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/report_system.PNG)
 
+## 3.4. Diagrame
+
+### 3.4.1. Login sequence diagram
+
+![login sequence diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/login_Sequence.PNG)
+
+
 ## 4. Testarea aplicației
 
 Pentru aceasta s-a folosit Junit4 pentru testarea unitară a componentelor aplicației și Mockito pentru a imita datele și operațiile la nivel de bază de date.
