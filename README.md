@@ -359,7 +359,7 @@ Pentru implementarea sistemului de rapoarte a fost folosit design pattern-ul Fac
 
 ### 3.4.1. Login sequence diagram
 
-![login sequence diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/login_Sequence.PNG)
+![login sequence diagram](https://github.com/MarcusGitAccount/Kor/blob/master/src/main/resources/images/login_sequence.png)
 
 
 ## 4. Testarea aplicației
