@@ -29,6 +29,7 @@ public class RoleController {
   }
 
   @GetMapping("/api/role")
+  @CrossOrigin(origins = "*")
   public ResponseEntity getAllUserRoles(
       @RequestHeader("authorization") String token) {
 

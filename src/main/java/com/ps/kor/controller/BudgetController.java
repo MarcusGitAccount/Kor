@@ -33,6 +33,7 @@ public class BudgetController {
   }
 
   @GetMapping("/api/budget")
+  @CrossOrigin(origins = "*")
   public ResponseEntity getById(
       @RequestHeader("authorization") String token,
       @RequestParam("budget") UUID budgetId
