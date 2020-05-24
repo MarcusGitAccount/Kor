@@ -25,15 +25,27 @@ public class ReportFactoryTests {
 
   /**
    * Given a ReportFactory object
-   * When requested a certain report type to be retrieved
+   * When requested a report of CountAndSumByType
    * Then the correct Report instance is returned
    */
   @Test
-  public void testFactoryCreation() {
-    Report report1 = reportFactory.getInstance(ReportFactory.ReportType.CountAndSumByType);
-    Report report2 = reportFactory.getInstance(ReportFactory.ReportType.CountAndSumByTypeRole);
+  public void testFactoryCreationCST() {
+    Report report = reportFactory.getInstance(ReportFactory.ReportType.CountAndSumByType);
 
-    Assertions.assertTrue(report1 instanceof CountSumByTypeReport);
-    Assertions.assertTrue(report2 instanceof CountSumByTypeRoleReport);
+    Assertions.assertTrue(report instanceof CountSumByTypeReport);
   }
+
+
+  /**
+   * Given a ReportFactory object
+   * When requested a report of CountAndSumByTypeRole
+   * Then the correct Report instance is returned
+   */
+  @Test
+  public void testFactoryCreationCSTR() {
+    Report report = reportFactory.getInstance(ReportFactory.ReportType.CountAndSumByTypeRole);
+
+    Assertions.assertTrue(report instanceof CountSumByTypeRoleReport);
+  }
+
 }
