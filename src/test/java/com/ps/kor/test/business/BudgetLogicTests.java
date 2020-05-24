@@ -111,7 +111,6 @@ public class BudgetLogicTests {
      * Given an authenticated use
      * When trying to create a new DailyBudget
      * Then the following hold true:
-     * - the servers responds with CREATED http status
      * - one role has been created for the given user with
      *   the appropriate CREATOR type.
      */
