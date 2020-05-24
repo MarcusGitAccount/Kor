@@ -1,0 +1,24 @@
+Services to implement:
+
+budget:
+    - create    POST /api/budget
+    - get by id GET  /api/budget  (x)
+
+auth:
+    - signup POST /auth/signup
+    - login  POST /auth/login   (x)
+    - logout POST /auth/logout  (x)
+
+expenditure:
+    - create POST /api/expenditure (x)
+
+report:
+    - create POST /api/report (x)
+
+role:
+
+    - create                 POST /api/role (x)
+    - get all roles for user GET  /api/role (x)
+
+user:
+    - get all users           (x)
