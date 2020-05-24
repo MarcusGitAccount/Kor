@@ -253,7 +253,7 @@ Exemplu răspuns returnat pentru un scenariu de succes:
 }
 ```
 
-###### GET */api/expenditurebudget=budget_id&type=report=report_type*
+###### GET */api/report?budget=budget_id&type=report_type*
 
 - permite generarea unui raport de tip furnizat ca și parametru
 
@@ -282,6 +282,35 @@ Exemplu răspuns returnat pentru un scenariu de succes:
     },
     "messages": [
         "Generated report data."
+    ],
+    "errorMessages": []
+}
+```
+
+###### GET */api/user?budget=budget_id*
+
+- returnează toți utilizatorii care nu aparțin de bugetul dat
+
+Următoarele headere trebuie setate pentru a putea face request-ul:
+
+| Nume  | Valoare |
+| ------ | ------ |
+| Authorization | Token-ul de autentificare a autilizatorului logat|
+
+Exemplu răspuns returnat pentru un scenariu de succes:
+
+```JSON
+{
+    "data": [
+        {
+            "id": "d38fa345-2c0f-4ca0-8e63-282edf9b71c2",
+            "firstName": "Ion",
+            "lastName": "Gheorghescu",
+            "email": "second@email.com"
+        }
+    ],
+    "messages": [
+        "Data succesfully queried and retrieved"
     ],
     "errorMessages": []
 }
